@@ -1,27 +1,40 @@
 {
   "name": "@cotype/serverless-next",
   "version": "0.0.0-development",
-  "description": "serverless, next, cotype, nextjs, aws, sls",
+  "description": "serverless plugin for next with cotype",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "serverless",
-    "next",
     "cotype",
+    "next",
     "nextjs",
+    "serverless",
     "aws",
-    "sls"
+    "sls",
+    "lambda"
   ],
   "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
   "license": "MIT",
+  "peerDependencies": {
+    "next": "^8"
+  },
+  "dependencies": {
+    "@xiphe/next-routing": "1.0.0",
+    "@xiphe/serverless-nextjs-plugin": "2.0.0-RC.1",
+    "express": "4.16.4",
+    "get-port": "5.0.0",
+    "http-proxy-middleware": "0.19.1",
+    "serverless-http": "2.0.1"
+  },
   "devDependencies": {
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "4.2.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",
+    "next": "8.1.0",
     "prettier": "1.17.0"
   }
 }

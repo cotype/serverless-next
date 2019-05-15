@@ -1,6 +1,7 @@
 'use strict';
 
 const ServerlessNext = require('@xiphe/serverless-nextjs-plugin');
+const path = require('path');
 
 function routePath(pattern, keys) {
   return keys
@@ -35,6 +36,27 @@ module.exports = class CotypeServerlessNext extends ServerlessNext {
     };
 
     process.env.NEXT_ASSET_BUCKET_NAME = this.opts.assetBucketName;
+
+    const servicePackage = serverless.service.package;
+    const compat = require.resolve(
+      '@xiphe/serverless-nextjs-plugin/aws-lambda-compat',
+    );
+    servicePackage.include = servicePackage.include || [];
+    servicePackage.include.push(
+      path.relative(
+        serverless.config.servicePath,
+        path.join(__dirname, 'src', 'prodHandler.js'),
+      ),
+    );
+    servicePackage.include.push(
+      path.relative(serverless.config.servicePath, compat),
+    );
+    servicePackage.include.push(
+      path.relative(
+        serverless.config.servicePath,
+        path.resolve(compat, '..', 'lib', '**'),
+      ),
+    );
 
     this.hooks['before:offline:start'] = this.serveOffline.bind(this);
     this.hooks['before:offline:start:init'] = this.serveOffline.bind(this);

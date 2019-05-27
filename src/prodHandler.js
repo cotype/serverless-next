@@ -1,6 +1,6 @@
 'use strict';
 
-const compat = require('@xiphe/serverless-nextjs-plugin/aws-lambda-compat');
+const compat = require('next-aws-lambda');
 
 function stripPrefix(event, prefix) {
   if (!prefix) {

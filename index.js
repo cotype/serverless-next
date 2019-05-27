@@ -1,6 +1,6 @@
 'use strict';
 
-const ServerlessNext = require('@xiphe/serverless-nextjs-plugin');
+const ServerlessNext = require('serverless-nextjs-plugin');
 const path = require('path');
 
 function routePath(pattern, keys) {
@@ -38,9 +38,7 @@ module.exports = class CotypeServerlessNext extends ServerlessNext {
     process.env.NEXT_ASSET_BUCKET_NAME = this.opts.assetBucketName;
 
     const servicePackage = serverless.service.package;
-    const compat = require.resolve(
-      '@xiphe/serverless-nextjs-plugin/aws-lambda-compat',
-    );
+    const compat = require.resolve('next-aws-lambda');
     servicePackage.include = servicePackage.include || [];
     servicePackage.include.push(
       path.relative(

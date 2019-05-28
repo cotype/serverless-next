@@ -1,7 +1,7 @@
 'use strict';
 
-const { stripPrefix } = require('./prodHandler');
-const getProxy = require('./proxy');
+const { stripPrefix } = require('./prod');
+const getProxy = require('../src/proxy');
 
 const redirects = ['/_next/on-demand-entries-ping', '/_next/webpack-hmr'];
 

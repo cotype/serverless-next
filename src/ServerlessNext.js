@@ -8,6 +8,7 @@ const retryUploadArtifacts = require('./retryUploadArtifacts');
 const injectHook = require('./injectHook');
 const createRoutes = require('./createRoutes');
 const mutateNextFunctions = require('./mutateNextFunctions');
+const createStages = require('./createStages');
 
 module.exports = class CotypeServerlessNext extends ServerlessNext {
   constructor(serverless, options) {
@@ -33,13 +34,19 @@ module.exports = class CotypeServerlessNext extends ServerlessNext {
       serverless,
       this,
       ['before:package:initialize', 'before:deploy:function:initialize'],
-      createRoutes,
+      () => {
+        return Promise.all([
+          createStages(serverless, this),
+          createRoutes(serverless),
+        ]);
+      },
       mutateNextFunctions,
     );
   }
 
   getOptions() {
     return {
+      stages: [],
       basePath: '/next',
       assetBucketName: `${this.$$serverless.service.getServiceName()}-${
         process.env.NODE_ENV

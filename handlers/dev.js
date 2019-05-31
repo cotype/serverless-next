@@ -1,11 +1,12 @@
 'use strict';
 
 const { stripPrefix } = require('./prod');
-const getProxy = require('../src/proxy');
+const proxy = require('../src/proxy');
 
 const redirects = ['/_next/on-demand-entries-ping', '/_next/webpack-hmr'];
 
-exports.next = async function nextDevHandler(event, context) {
+exports.next = function nextDevHandler(event, context) {
+  const localNextUrl = `http://localhost:${process.env.NEXT_PORT}`;
   for (let i = 0, l = redirects.length; i < l; i += 1) {
     const redirect = redirects[i];
 
@@ -21,13 +22,13 @@ exports.next = async function nextDevHandler(event, context) {
       return {
         statusCode: 307,
         headers: {
-          Location: `http://localhost:${process.env.NEXT_PORT}${redirect}${q}`,
+          Location: [localNextUrl, redirect, q].join(''),
         },
       };
     }
   }
 
-  return (await getProxy())(
+  return proxy(localNextUrl)(
     stripPrefix(event, process.env.NEXT_BASE_PATH),
     context,
   );

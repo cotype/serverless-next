@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 'use strict';
 
 const compat = require('next-aws-lambda');
@@ -24,9 +26,16 @@ function stripPrefix(event, prefix) {
   };
 }
 
+function exposeStage(event) {
+  global.__COTYPE_NEXT_DATA__ = {};
+  if (event.headers['X-Cotype-Next-Stage']) {
+    global.__COTYPE_NEXT_DATA__.stage = event.headers['X-Cotype-Next-Stage'];
+  }
+}
+
 module.exports = (page) => {
   return (event, context, callback) => {
-    // this makes sure the next page renders
+    exposeStage(event);
     compat(page)(stripPrefix(event), context, callback);
   };
 };

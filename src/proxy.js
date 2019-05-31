@@ -2,18 +2,28 @@
 
 const proxy = require('http-proxy-middleware');
 const serverless = require('serverless-http');
-const express = require('express');
-const cached = require('./cached');
+const connect = require('connect');
+const memoize = require('memoize-one');
 
-module.exports = cached(() => {
-  const app = express();
+function getDefault(mdl) {
+  if (mdl.default) {
+    return mdl.default;
+  }
 
-  app.use(
-    proxy(`http://localhost:${process.env.NEXT_PORT}`, {
-      changeOrigin: true,
-      logLevel: 'warn',
-    }),
-  );
+  return mdl;
+}
+
+const DEFAULT_OPTIONS = {
+  changeOrigin: true,
+  logLevel: 'warn',
+};
+
+module.exports = getDefault(memoize)((target, options = DEFAULT_OPTIONS) => {
+  const app = connect();
+
+  app.use((req, res, next) => {
+    proxy(target, options)(req, res, next);
+  });
 
   return serverless(app);
 });

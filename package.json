@@ -22,10 +22,11 @@
   },
   "dependencies": {
     "@xiphe/next-routing": "1.0.0",
-    "express": "4.16.4",
+    "connect": "3.7.0",
     "get-port": "5.0.0",
     "http-proxy-middleware": "0.19.1",
     "lodash.merge": "4.6.1",
+    "memoize-one": "5.0.4",
     "next-aws-lambda": "2.0.5-alpha.0",
     "serverless-http": "2.0.1",
     "serverless-nextjs-plugin": "2.0.6-alpha.0"

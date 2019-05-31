@@ -1,6 +1,6 @@
 {
   "name": "@cotype/serverless-next",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "serverless plugin for next with cotype",
   "main": "index.js",
   "scripts": {

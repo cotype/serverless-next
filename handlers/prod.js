@@ -26,17 +26,28 @@ function stripPrefix(event, prefix) {
   };
 }
 
-function exposeStage(event) {
-  global.__COTYPE_NEXT_DATA__ = {};
+function exposeCotype(event) {
+  global.__COTYPE_NEXT_DATA__ = global.__COTYPE_NEXT_DATA__ || {};
   if (event.headers['X-Cotype-Next-Stage']) {
     global.__COTYPE_NEXT_DATA__.stage = event.headers['X-Cotype-Next-Stage'];
+    global.__COTYPE_NEXT_DATA__.basePath = `${process.env.BASE_PATH}/${
+      event.headers['X-Cotype-Next-Stage']
+    }`;
+  } else {
+    global.__COTYPE_NEXT_DATA__.basePath = `${process.env.BASE_PATH}${
+      process.env.NEXT_BASE_PATH
+    }`;
   }
 }
 
 module.exports = (page) => {
   return (event, context, callback) => {
-    exposeStage(event);
-    compat(page)(stripPrefix(event), context, callback);
+    exposeCotype(event);
+    compat(page)(
+      stripPrefix(event, process.env.NEXT_BASE_PATH),
+      context,
+      callback,
+    );
   };
 };
 

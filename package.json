@@ -18,7 +18,8 @@
   "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
   "license": "MIT",
   "peerDependencies": {
-    "next": "^8"
+    "next": "^8",
+    "react": "^16"
   },
   "dependencies": {
     "@xiphe/next-routing": "1.0.0",
@@ -38,6 +39,9 @@
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",
     "next": "8.1.0",
-    "prettier": "1.17.0"
+    "next-server": "8.1.0",
+    "prettier": "1.17.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   }
 }

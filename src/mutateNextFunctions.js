@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 'use strict';
 
 module.exports = function mutateNextFunctions(serverless, plugin) {
@@ -7,8 +9,12 @@ module.exports = function mutateNextFunctions(serverless, plugin) {
       return;
     }
 
+    funct.environment = {
+      ...funct.environment,
+      BASE_PATH: `/${serverless.service.provider.stage}`,
+      NEXT_BASE_PATH: basePath,
+    };
     funct.events.forEach(({ http }) => {
-      /* eslint-disable-next-line no-param-reassign */
       http.path = `${basePath}${http.path}`;
     });
   });

@@ -3,6 +3,9 @@
 'use strict';
 
 const App = require('next/app').default;
+const { createContext, createElement } = require('react');
+
+const { Provider, Consumer } = createContext();
 
 async function getInitialProps({ ctx, ...rest }) {
   const cotype =
@@ -21,8 +24,17 @@ async function getInitialProps({ ctx, ...rest }) {
   };
 }
 
-class CotypeApp extends App {}
+class CotypeApp extends App {
+  render() {
+    return createElement(
+      Provider,
+      { value: this.props.cotype },
+      super.render(),
+    );
+  }
+}
 
 CotypeApp.getInitialProps = getInitialProps;
+CotypeApp.Context = Consumer;
 
 module.exports = CotypeApp;

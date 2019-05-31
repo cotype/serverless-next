@@ -19,12 +19,12 @@ exports.next = function nextDevHandler(event, context) {
             .join('&')}`
         : '';
 
-      return {
+      return Promise.resolve({
         statusCode: 307,
         headers: {
           Location: [localNextUrl, redirect, q].join(''),
         },
-      };
+      });
     }
   }
 

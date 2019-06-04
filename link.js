@@ -12,29 +12,39 @@ function absolute(href, basePath) {
   return url === '/' ? url : url.replace(/\/$/, '');
 }
 
-module.exports = withRouter(function CotypeLink({ router, href, as, ...rest }) {
+module.exports = withRouter(function CotypeLink({
+  router,
+  href: someHref,
+  ...someRest
+}) {
   return createElement(Context, {
     children: ({ basePath }) => {
-      if (as || !href || !basePath || !href.match(/^(\/|\.)/)) {
-        return createElement(Link, {
-          href,
-          as,
-          ...rest,
-        });
-      }
+      const href = absolute(someHref, router.pathname);
 
-      if (href.match(/^\//)) {
-        return createElement(Link, {
-          href,
-          ...rest,
-          as: `${basePath}${href}`,
-        });
-      }
+      const { as, query, rest } = (href.match(/\/\$[a-z0-9]+/g) || []).reduce(
+        (memo, n) => {
+          const name = n.replace(/\/\$/, '');
+
+          if (someRest[name]) {
+            memo.query.push(`${name}=${someRest[name]}`);
+            /* eslint-disable-next-line no-param-reassign */
+            memo.as = memo.as.replace(
+              new RegExp(`\\/\\$${name}`, 'g'),
+              `/${someRest[name]}`,
+            );
+            /* eslint-disable-next-line no-param-reassign */
+            delete memo.rest[name];
+          }
+
+          return memo;
+        },
+        { query: [], rest: { ...someRest }, as: `${basePath}${href}` },
+      );
 
       return createElement(Link, {
+        href: `${href}${query.length ? `?${query.join('&')}` : ''}`,
+        as,
         ...rest,
-        href: absolute(href, router.pathname),
-        as: absolute(href, `${basePath}${router.pathname}`),
       });
     },
   });

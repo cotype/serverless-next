@@ -27,17 +27,17 @@ function stripPrefix(event, prefix) {
 }
 
 function exposeCotype(event) {
-  global.__COTYPE_NEXT_DATA__ = global.__COTYPE_NEXT_DATA__ || {};
+  const nextData = {};
   if (event.headers['X-Cotype-Next-Stage']) {
-    global.__COTYPE_NEXT_DATA__.stage = event.headers['X-Cotype-Next-Stage'];
-    global.__COTYPE_NEXT_DATA__.basePath = `${process.env.BASE_PATH}/${
+    nextData.stage = event.headers['X-Cotype-Next-Stage'];
+    nextData.basePath = `${process.env.BASE_PATH}/${
       event.headers['X-Cotype-Next-Stage']
     }`;
   } else {
-    global.__COTYPE_NEXT_DATA__.basePath = `${process.env.BASE_PATH}${
-      process.env.NEXT_BASE_PATH
-    }`;
+    nextData.basePath = `${process.env.BASE_PATH}${process.env.NEXT_BASE_PATH}`;
   }
+
+  global.__COTYPE_NEXT_DATA__ = nextData;
 }
 
 module.exports = (page) => {

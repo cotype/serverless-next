@@ -9,8 +9,9 @@ module.exports = function serveOffline(serverless, plugin) {
   return async () => {
     const { basePath } = plugin.getOptions();
 
-    global.__COTYPE_NEXT_DATA__ = global.__COTYPE_NEXT_DATA__ || {};
-    global.__COTYPE_NEXT_DATA__.basePath = basePath;
+    global.__COTYPE_NEXT_DATA__ = {
+      basePath,
+    };
 
     const port = await startLocalNext(serverless, plugin);
 
